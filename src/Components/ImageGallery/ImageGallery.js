@@ -32,18 +32,18 @@ export default class ImageGallery extends PureComponent {
         .then((res) => {
           return res.hits;
         })
-        .then((imgName) =>
+        .then((imgName) => {
           this.setState((prevState) => ({
             imgName: [...prevState.imgName, ...imgName],
             status: "resolved",
-          }))
-        )
+          }));
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          });
+        })
         .catch((err) => this.setState({ err, status: "reject" }));
     }
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
   }
 
   loadMore = () => {
@@ -52,10 +52,10 @@ export default class ImageGallery extends PureComponent {
     }));
   };
 
-  handlerClick = (e) => {
-    if (e.target.attributes.bigimg) {
+  handlerClick = (largeIng) => {
+    if (largeIng) {
       this.props.onShowModal();
-      this.props.modalImg(e.target.attributes.bigimg.value);
+      this.props.modalImg(largeIng);
     }
   };
   render() {
@@ -66,9 +66,13 @@ export default class ImageGallery extends PureComponent {
       return (
         <div>
           {imgName && (
-            <ul onClick={this.handlerClick} className={s.ImageGallery}>
+            <ul className={s.ImageGallery}>
               {imgName.map((img) => (
-                <ImageGalleryItem img={img} key={img.id} />
+                <ImageGalleryItem
+                  onClick={this.handlerClick}
+                  img={img}
+                  key={img.id}
+                />
               ))}
             </ul>
           )}
@@ -87,9 +91,13 @@ export default class ImageGallery extends PureComponent {
       return (
         <div>
           {imgName.length > 0 ? (
-            <ul onClick={this.handlerClick} className={s.ImageGallery}>
+            <ul className={s.ImageGallery}>
               {imgName.map((img) => (
-                <ImageGalleryItem img={img} key={img.id} />
+                <ImageGalleryItem
+                  onClick={this.handlerClick}
+                  img={img}
+                  key={img.id}
+                />
               ))}
             </ul>
           ) : (

@@ -1,14 +1,16 @@
 import { Component } from "react";
 import s from "./ImageGalleryItem.module.css";
-import PropTypes, { arrayOf } from "prop-types";
+import PropTypes from "prop-types";
 export default class ImageGalleryItem extends Component {
-  state = {};
+  handlerOnClick = () => {
+    this.props.onClick(this.props.img.largeImageURL);
+  };
   render() {
     const { img } = this.props;
     return (
       <li className={s.ImageGalleryItem}>
         <img
-          bigimg={img.largeImageURL}
+          onClick={this.handlerOnClick}
           src={img.webformatURL}
           alt={img.tag}
           className={s.ImageGalleryItem_image}
